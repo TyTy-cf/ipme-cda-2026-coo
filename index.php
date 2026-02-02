@@ -5,6 +5,10 @@ use patterns\builder\DirectorDeLaLeague;
 use patterns\builder\ServiceBuilder;use patterns\builder\SpellItemBuilder;
 use patterns\composite\HeadDepartment;
 use patterns\composite\SalesDepartment;
+use patterns\decorator\Decorator;
+use patterns\decorator\DiscordDecorator;
+use patterns\decorator\MailDecorator;
+use patterns\decorator\SMSDecorator;
 use patterns\factory\Circle;
 use patterns\factory\ShapeFactory;
 use patterns\factory\Square;
@@ -69,6 +73,28 @@ $director->setBuilder(new ServiceBuilder())
     ->constructItem(1);
 
 var_dump($director->getItem());
+
+// Decorator
+function getSmsMailDecorator(): Decorator {
+    $smsDecorator = new SmsDecorator();
+    return new MailDecorator($smsDecorator);
+}
+
+$test = 3;
+
+if ($test == 1) {
+    $mailDecorator = getSmsMailDecorator();
+    $mailDecorator->send("Un super message de notification push<br>");
+}
+if ($test == 2) {
+    $discordDecorator = new DiscordDecorator();
+    $discordDecorator->send("Un super message de notification push<br>");
+}
+if ($test == 3) {
+    $mailDecorator = getSmsMailDecorator();
+    $discordDecorator = new DiscordDecorator($mailDecorator);
+    $discordDecorator->send("Un super message de notification push<br>");
+}
 
 ?>
 
