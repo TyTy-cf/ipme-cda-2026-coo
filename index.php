@@ -1,5 +1,8 @@
 <?php
 
+use patterns\builder\ChampionItemBuilder;
+use patterns\builder\DirectorDeLaLeague;
+use patterns\builder\ServiceBuilder;use patterns\builder\SpellItemBuilder;
 use patterns\composite\HeadDepartment;
 use patterns\composite\SalesDepartment;
 use patterns\factory\Circle;
@@ -54,6 +57,18 @@ foreach ($headDepartment->getComposants() as $composant) {
     echo "- " . $composant->getName() . "<br>";
 }
 
+// Builder
+$director = (new DirectorDeLaLeague())
+    ->setBuilder(new ChampionItemBuilder())
+    ->constructItem(1);
+
+$director->setBuilder(new SpellItemBuilder())
+    ->constructItem(2);
+
+$director->setBuilder(new ServiceBuilder())
+    ->constructItem(1);
+
+var_dump($director->getItem());
 
 ?>
 
