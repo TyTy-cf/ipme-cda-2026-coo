@@ -1,5 +1,7 @@
 <?php
 
+use patterns\composite\HeadDepartment;
+use patterns\composite\SalesDepartment;
 use patterns\factory\Circle;
 use patterns\factory\ShapeFactory;
 use patterns\factory\Square;
@@ -19,8 +21,10 @@ spl_autoload_register(function ($class) {
     }
 });
 
+// Singleton
 $singleton = Singleton::getInstance();
 
+// Factory
 $shapeFactory = new ShapeFactory();
 
 $circle = $shapeFactory->createShape(Circle::class);
@@ -33,9 +37,23 @@ if ($square instanceof Square) {
     $square->setWidth(5.0);
 }
 
+// Observer - Observable
 $shapeFactory->addObserver($circle)
         ->addObserver($square)
         ->notifyAll();
+
+// Composite
+$salesDepartment = (new SalesDepartment())->setName("IPME Florian");
+$headDepartment = (new HeadDepartment())
+    ->setName("IPME HD")
+    ->addComposant(((new HeadDepartment())->setName("IPME SD")))
+    ->addComposant($salesDepartment);
+
+echo $headDepartment->getName() . " : <br>";
+foreach ($headDepartment->getComposants() as $composant) {
+    echo "- " . $composant->getName() . "<br>";
+}
+
 
 ?>
 
