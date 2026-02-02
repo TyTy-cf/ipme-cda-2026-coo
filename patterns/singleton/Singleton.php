@@ -1,5 +1,9 @@
 <?php
 
+namespace patterns\singleton;
+
+use DateTime;
+
 class Singleton
 {
 
